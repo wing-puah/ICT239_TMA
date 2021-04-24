@@ -1,11 +1,12 @@
 const user = (function () {
-  function login({ username, password }) {}
+  function login({ email, password }) {}
 
-  function register({ username, password, weight, gender }) {
+  function register({ email, password, weight, gender }) {
+    console.log("ajax");
     $.ajax({
       url: "/register",
       type: "POST",
-      data: JSON.stringify({ username, password, weight, gender }),
+      data: JSON.stringify({ email, password, weight, gender }),
       dataType: "json",
       contentType: "application/json",
     })
@@ -30,5 +31,6 @@ function onLogin() {
 function onRegister() {
   const formData = new FormData(document.getElementById("register-form"));
   const formObject = Object.fromEntries(formData);
+  console.log({ formObject, user });
   user.register(formObject);
 }
