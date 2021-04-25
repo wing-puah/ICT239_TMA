@@ -21,7 +21,7 @@
             <li><a href="{{ url_for('log') }}">Log</a></li>
             <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
             <li><a href="{{ url_for('upload') }}">Upload</a></li>
-            <li><a href="">Logout</a></li>
+            <li><span onclick="user.logout()">Logout</span></li>
         </ul>
     </nav>
     {% block content %}

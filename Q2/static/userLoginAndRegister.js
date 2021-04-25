@@ -1,10 +1,27 @@
-let userDetails = {
-  _id: null,
-  gender: null,
-  weight: null,
-  email: null,
-  role: [],
-};
+// let userDetails = {
+//   _id: null,
+//   gender: null,
+//   weight: null,
+//   email: null,
+//   role: [],
+// };
+
+const userFeStorage = (function () {
+  async function save(data) {
+    localStorage.setItem("user", JSON.stringify(data));
+  }
+
+  async function retrieve() {
+    const _user = localStorage.getItem("user");
+    return JSON.parse(_user);
+  }
+
+  async function remove() {
+    localStorage.removeItem("user");
+  }
+
+  return { save, retrieve, remove };
+})();
 
 const user = (function () {
   function login({ email, password }) {
@@ -17,7 +34,7 @@ const user = (function () {
     })
       .done(function (json) {
         const { data } = json;
-        userDetails = data;
+        userFeStorage.save(data);
         console.log("init redirect");
         window.location.href = "/log";
       })
@@ -39,7 +56,7 @@ const user = (function () {
     })
       .done(function (json) {
         const { data } = json;
-        userDetails = data;
+        userFeStorage.save(data);
         window.location.href = "/log";
       })
       .fail(function (xhr, status, error) {
@@ -47,7 +64,12 @@ const user = (function () {
       });
   }
 
-  return { login, register };
+  function logout() {
+    userFeStorage.remove();
+    window.location.href = "/";
+  }
+
+  return { login, register, logout };
 })();
 
 function onLogin() {
@@ -65,6 +87,7 @@ function onRegister() {
 function populateUser() {
   console.log("in populate");
   const { _id, gender, weight, email, role } = userDetails || {};
+  console.log({ userDetails });
   const idContentMapper = [
     { id: "user_id", data: email },
     { id: "user_gender", data: gender },

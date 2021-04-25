@@ -62,7 +62,6 @@ def login():
             return Response('Unauthenticated', status=401)
 
         return json.dumps({'success': True, 'data': db_res})
-        # return redirect(url_for('log'))
 
 
 if __name__ == "__main__":

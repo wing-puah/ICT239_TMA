@@ -18,5 +18,6 @@ class User:
         if data == None:
             return None
 
+        del data['password']
         data['_id'] = str(data['_id'])
         return data

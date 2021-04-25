@@ -27,6 +27,12 @@ nav li {
   padding: 0 10px;
 }
 
+nav span {
+  cursor: pointer;
+  text-decoration: underline;
+  color: -webkit-link;
+}
+
 .nav__logo {
   height: 60px;
 }
