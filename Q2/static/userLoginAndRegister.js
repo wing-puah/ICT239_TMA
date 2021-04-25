@@ -84,8 +84,9 @@ function onRegister() {
   user.register(formObject);
 }
 
-function populateUser() {
+async function populateUser() {
   console.log("in populate");
+  const userDetails = await userFeStorage.retrieve();
   const { _id, gender, weight, email, role } = userDetails || {};
   console.log({ userDetails });
   const idContentMapper = [
