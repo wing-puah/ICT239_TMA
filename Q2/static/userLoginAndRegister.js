@@ -77,7 +77,7 @@ function onRegister() {
 
 async function populateUser() {
   const userDetails = await userFeStorage.retrieve();
-  const { gender, weight, email } = userDetails || {};
+  const { gender, weight, email, role } = userDetails || {};
 
   const idContentMapper = [
     { id: "user_id", data: email },
@@ -89,4 +89,20 @@ async function populateUser() {
     const { id, data } = item;
     document.getElementById(id).textContent = data;
   });
+}
+
+async function populateUserRole() {
+  const userDetails = await userFeStorage.retrieve();
+  const { email, role } = userDetails || {};
+  document.getElementById("user_id").textContent = email;
+  document.getElementById("user_role").textContent = createRole(role);
+}
+
+function createRole(roles) {
+  try {
+    return roles.join(" and ");
+  } catch (error) {
+    console.error(`Issue with parsing role: ${role}`);
+    return "User";
+  }
 }

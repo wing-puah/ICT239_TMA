@@ -1,4 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container">
+    {% with active="upload" %}
+    {% include "sidebar.html" %}
+    {% endwith %}
+
+    <section class="form__container"></section>
+</div>
+
+{% endblock %}
+
+{% block additionalScripts %}
+<script>
+    populateUserRole()
+</script>
 {% endblock %}

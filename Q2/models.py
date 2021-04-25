@@ -35,11 +35,9 @@ calorie_per_min_per_kg_map = {
 
 class Activity(Collection):
     def add_single(self, data):
-        print(data)
         parsed_data = parse_form_to_db(data)
         self.collection.insert_one(parsed_data)
         parsed_data['_id'] = str(parsed_data['_id'])
-        print(f'parsed_data: {parsed_data}')
         return parsed_data
 
 
@@ -64,7 +62,8 @@ def parse_form_to_db(data):
     data['total_calories'] = total_calories
     return data
 
-    # for k, v in data.items():
-    #     data_to_insert.append({'date': date, 'time': time, k: v})
 
-    # return data_to_insert
+class File(Collection):
+    def upload(self, file):
+        print(f'file: {file}')
+        pass

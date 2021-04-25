@@ -1,7 +1,7 @@
 from flask import Flask, Response, render_template, jsonify
 
 # For flask implementation
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.exceptions import HTTPException, InternalServerError
 from bson import ObjectId  # For ObjectId to work
 from flask_pymongo import PyMongo
@@ -9,13 +9,14 @@ import json
 import os
 import copy
 
-from models import User, Activity
+from models import User, Activity, File
 app = Flask(__name__)
 
 app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017/fitwell'
 mongo = PyMongo(app)
 user_db_handler = User(mongo.db.user)
 activity_db_handler = Activity(mongo.db.activity)
+file_db_handler = File(mongo.db.activity)
 
 
 @app.route("/")
@@ -46,9 +47,16 @@ def dashboard():
     return render_template("dashboard.html")
 
 
-@app.route("/upload")
+@app.route("/upload", methods=['GET', 'POST'])
 def upload():
-    return render_template("upload.html")
+    if request.method == 'GET':
+        return render_template("upload.html")
+    elif request.method == 'POST':
+        if 'file' not in request.files:
+            return Response('Missing files', status=406)
+
+        file = request.files['file']
+        file_db_handler.upload(file)
 
 
 @app.route('/login', methods=['POST'])
