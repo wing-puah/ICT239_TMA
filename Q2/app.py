@@ -1,26 +1,25 @@
-from flask import Flask, render_template
+from flask import Flask, Response, render_template, jsonify
 
 # For flask implementation
 from flask import Flask, render_template, request, redirect, url_for
+from werkzeug.exceptions import HTTPException, InternalServerError
 from bson import ObjectId  # For ObjectId to work
 from flask_pymongo import PyMongo
 import json
 import os
 import copy
 
-
+from models import User
 # from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017/fitwell'
 mongo = PyMongo(app)
+user_db_handler = User(mongo.db.user)
 
 
 @app.route("/")
 def index():
-    cursor = mongo.db.user.find()
-    record_count = str(cursor.count())
-    print(f'record_count: {record_count}')
     return render_template("index.html")
 
 
@@ -35,7 +34,11 @@ def register():
         return render_template("register.html")
     elif request.method == 'POST':
         data = request.json
-        return save_user_to_db(data)
+        print(f'A user is being registerd: {data}')
+        db_res = user_db_handler.add_single(data)
+        # return redirect('/log')
+        # return redirect(url_for('log'))
+        return json.dumps({'success': True, 'data': db_res})
 
 
 @app.route("/dashboard")
@@ -52,19 +55,14 @@ def upload():
 def login():
     if request.method == "POST":
         data = request.json
-        print(data)
-        # return jsons.
+        print(f'A user is logging in: {data}')
+        db_res = user_db_handler.get_single(data['email'], data['password'])
 
+        if db_res == None:
+            return Response('Unauthenticated', status=401)
 
-def save_user_to_db(data):
-    print(data)
-    clone_data = copy.deepcopy(data)
-    del clone_data['password']
-    # username = data.get('email')
-    # password = data.get('password')
-    # weight = data.get('weight')
-    # gender = data.get('gender')
-    return json.dumps({'success': True, 'data': clone_data})
+        return json.dumps({'success': True, 'data': db_res})
+        # return redirect(url_for('log'))
 
 
 if __name__ == "__main__":

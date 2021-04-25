@@ -1,95 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="static/style.css" />
-    <title>Fitwell</title>
-</head>
+{% block content %}
+<div class="container">
+    {% with active="register" %}
+    {% include "sidebar.html" %}
+    {% endwith %}
 
-<body>
-    <nav>
-        <div class="nav__logo">
-            <img src="static/logo.PNG" />
+    <section class="form__container">
+        <div class="text-center">
+            <h1>Calorie consumption</h1>
         </div>
-        <ul>
-            <li><a href="register.html">Register</a></li>
-            <li><a href="index.html">Login</a></li>
-            <li><a href="log.html">Log</a></li>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="upload.html">Upload</a></li>
-            <li><a href="">Logout</a></li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <aside>
-            <div class="user-profile__container text-center">
-
-                <i class="fas fa-user"></i>
-                <div>My id is: abc@def.com</div>
-                <div>My gender and weight</div>
+        <div>
+            Input Date/Time, your weight, and time spent on each exercise.
+        </div>
+        <form id="log">
+            <div class="form__row--datetime">
+                <label for="datetime">Date & time</label>
+                <input type="string" id="datetime" name="datetime" />
+                <div>e.g. 2021-01-22T15:00</div>
             </div>
 
-        </aside>
-
-        <section class="form__container">
             <div class="text-center">
-                <h1>Calorie consumption</h1>
+                <div class="form__row">
+                    <label for="weight">Weight</label>
+                    <input type="number" id="weight" name="weight" />
+                    <div>kilograms</div>
+                </div>
+                <div class="form__row">
+                    <label for="walking">Walking</label>
+                    <input type="number" id="walking" name="walking" />
+                    <div>minutes</div>
+                </div>
+                <div class="form__row">
+                    <label for="running">Running</label>
+                    <input type="number" id="running" name="running" />
+                    <div>minutes</div>
+                </div>
+                <div class="form__row">
+                    <label for="swimming">Swimming</label>
+                    <input type="number" id="swimming" name="swimming" />
+                    <div>minutes</div>
+                </div>
+                <div class="form__row">
+                    <label for="bicycling">Bicycling</label>
+                    <input type="number" id="bicycling" name="bicycling" />
+                    <div>minutes</div>
+                </div>
+
+                <button type="submit" class="width-auto" id="calories">
+                    Submit
+                </button>
             </div>
-            <div>
-                Input Date/Time, your weight, and time spent on each exercise.
+
+            <div class="text-center">
+                <h2>Total calories to be consumed: <span id="counter"></span> </h2>
             </div>
-            <form id="log">
-                <div class="form__row--datetime">
-                    <label for="datetime">Date & time</label>
-                    <input type="string" id="datetime" name="datetime" />
-                    <div>e.g. 2021-01-22T15:00</div>
-                </div>
+        </form>
+    </section>
+</div>
+{% endblock %}
 
-                <div class="text-center">
-                    <div class="form__row">
-                        <label for="weight">Weight</label>
-                        <input type="number" id="weight" name="weight" />
-                        <div>kilograms</div>
-                    </div>
-                    <div class="form__row">
-                        <label for="walking">Walking</label>
-                        <input type="number" id="walking" name="walking" />
-                        <div>minutes</div>
-                    </div>
-                    <div class="form__row">
-                        <label for="running">Running</label>
-                        <input type="number" id="running" name="running" />
-                        <div>minutes</div>
-                    </div>
-                    <div class="form__row">
-                        <label for="swimming">Swimming</label>
-                        <input type="number" id="swimming" name="swimming" />
-                        <div>minutes</div>
-                    </div>
-                    <div class="form__row">
-                        <label for="bicycling">Bicycling</label>
-                        <input type="number" id="bicycling" name="bicycling" />
-                        <div>minutes</div>
-                    </div>
+{% block additionalScripts %}
+<script src="static/log.js"></script>
 
-                    <button type="submit" class="width-auto" id="calories">
-                        Submit
-                    </button>
-                </div>
-
-                <div class="text-center">
-                    <h2>Total calories to be consumed: <span id="counter"></span> </h2>
-                </div>
-            </form>
-        </section>
-    </div>
-
-    <script src="static/log.js"></script>
-</body>
-
-</html>
+<script>
+    populateUser()
+</script>
+{% endblock %}

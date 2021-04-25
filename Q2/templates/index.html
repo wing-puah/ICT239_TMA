@@ -9,7 +9,7 @@
         {% include "containerTabs.html" %}
         {% endwith %}
 
-        <form class="user__form">
+        <form class="user__form" id="login-form">
 
             <label for="email">Enter your email:</label>
             <input type="email" id="email" name="email" />
@@ -17,10 +17,12 @@
             <label for="password">Enter your password:</label>
             <input type="password" id="password" name="password" />
 
-            <button type="submit">Submit</button>
+            <button type="button" onclick="onLogin()">Submit</button>
         </form>
     </div>
 </section>
 {% endblock %}
 
-<!-- {% block containerTabs %}  {% endblock %} -->
+{% block additionalScripts %}
+<!-- <script src="{{url_for('static', filename='userLoginAndRegister.js')}}"></script> -->
+{% endblock %}

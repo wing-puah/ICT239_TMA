@@ -40,7 +40,7 @@ form input {
   margin: 0 10px;
 }
 
-form button[type="submit"] {
+form button {
   background-color: #3b52b2;
   color: white;
   padding: 8px 5px;

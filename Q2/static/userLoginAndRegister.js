@@ -1,8 +1,35 @@
+let userDetails = {
+  _id: null,
+  gender: null,
+  weight: null,
+  email: null,
+  role: [],
+};
+
 const user = (function () {
-  function login({ email, password }) {}
+  function login({ email, password }) {
+    $.ajax({
+      url: "/login",
+      type: "POST",
+      data: JSON.stringify({ email, password }),
+      dataType: "json",
+      contentType: "application/json",
+    })
+      .done(function (json) {
+        const { data } = json;
+        userDetails = data;
+        console.log("init redirect");
+        window.location.href = "/log";
+      })
+      .fail(function (xhr, status, error) {
+        console.error(`${error}`);
+        alert(
+          `Sorry, there was a problem!: ${error}, use admin@fitwell.com, admin to login`
+        );
+      });
+  }
 
   function register({ email, password, weight, gender }) {
-    console.log("ajax");
     $.ajax({
       url: "/register",
       type: "POST",
@@ -11,11 +38,12 @@ const user = (function () {
       contentType: "application/json",
     })
       .done(function (json) {
-        console.log({ json });
+        const { data } = json;
+        userDetails = data;
+        window.location.href = "/log";
       })
       .fail(function (xhr, status, error) {
-        alert("Sorry, there was a problem!");
-        console.log({ error });
+        alert(`Sorry, there was a problem!: ${error}`);
       });
   }
 
@@ -31,6 +59,20 @@ function onLogin() {
 function onRegister() {
   const formData = new FormData(document.getElementById("register-form"));
   const formObject = Object.fromEntries(formData);
-  console.log({ formObject, user });
   user.register(formObject);
+}
+
+function populateUser() {
+  console.log("in populate");
+  const { _id, gender, weight, email, role } = userDetails || {};
+  const idContentMapper = [
+    { id: "user_id", data: email },
+    { id: "user_gender", data: gender },
+    { id: "user_weight", data: weight },
+  ];
+
+  idContentMapper.forEach((item) => {
+    const { id, data } = item;
+    document.getElementById(id).textContent = data;
+  });
 }
