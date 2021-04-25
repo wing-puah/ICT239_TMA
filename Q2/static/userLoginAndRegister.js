@@ -1,11 +1,3 @@
-// let userDetails = {
-//   _id: null,
-//   gender: null,
-//   weight: null,
-//   email: null,
-//   role: [],
-// };
-
 const userFeStorage = (function () {
   async function save(data) {
     localStorage.setItem("user", JSON.stringify(data));
@@ -35,7 +27,6 @@ const user = (function () {
       .done(function (json) {
         const { data } = json;
         userFeStorage.save(data);
-        console.log("init redirect");
         window.location.href = "/log";
       })
       .fail(function (xhr, status, error) {
@@ -85,10 +76,9 @@ function onRegister() {
 }
 
 async function populateUser() {
-  console.log("in populate");
   const userDetails = await userFeStorage.retrieve();
-  const { _id, gender, weight, email, role } = userDetails || {};
-  console.log({ userDetails });
+  const { gender, weight, email } = userDetails || {};
+
   const idContentMapper = [
     { id: "user_id", data: email },
     { id: "user_gender", data: gender },

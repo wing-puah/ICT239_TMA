@@ -9,13 +9,13 @@ import json
 import os
 import copy
 
-from models import User
-# from flask_sqlalchemy import SQLAlchemy
+from models import User, Activity
 app = Flask(__name__)
 
 app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017/fitwell'
 mongo = PyMongo(app)
 user_db_handler = User(mongo.db.user)
+activity_db_handler = Activity(mongo.db.activity)
 
 
 @app.route("/")
@@ -61,6 +61,14 @@ def login():
         if db_res == None:
             return Response('Unauthenticated', status=401)
 
+        return json.dumps({'success': True, 'data': db_res})
+
+
+@app.route('/activity', methods=['POST'])
+def activity():
+    if request.method == "POST":
+        data = request.json
+        db_res = activity_db_handler.add_single(data)
         return json.dumps({'success': True, 'data': db_res})
 
 
