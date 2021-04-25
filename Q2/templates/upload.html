@@ -6,7 +6,16 @@
     {% include "sidebar.html" %}
     {% endwith %}
 
-    <section class="form__container"></section>
+    <section class="form__container">
+        <h1>Upload recordings</h1>
+        <div>Upload CSV file e.g. "admin@fitwell.com.2021-01-17T01:00/97.20.0.0.29"</div>
+        <form>
+            <input type="file" id="file" name="file" accept="csv, xlsx"><br />
+            <button type="submit" class="width-auto mt-1" id="calories">
+                Upload
+            </button>
+        </form>
+    </section>
 </div>
 
 {% endblock %}

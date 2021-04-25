@@ -41,6 +41,10 @@ nav span {
   height: 100%;
 }
 
+.mt-1 {
+  margin-top: 10px;
+}
+
 form input {
   width: 200px;
   margin: 0 10px;

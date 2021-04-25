@@ -26,7 +26,14 @@ const activities = (function () {
       });
   }
 
-  return { add, populateCalorie };
+  function sendFile(e) {
+    e.preventDefault();
+  }
+
+  return { add, populateCalorie, sendFile };
 })();
 
+document
+  .getElementById("calories")
+  .addEventListener("submit", activities.sendFile);
 document.getElementById("log").addEventListener("submit", activities.add);
