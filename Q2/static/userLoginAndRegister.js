@@ -95,7 +95,9 @@ async function populateUserRole() {
   const userDetails = await userFeStorage.retrieve();
   const { email, role } = userDetails || {};
   document.getElementById("user_id").textContent = email;
-  document.getElementById("user_role").textContent = createRole(role);
+  document.getElementById("user_role").textContent = createRole(
+    role || ["user"]
+  );
 }
 
 function createRole(roles) {

@@ -1,4 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container">
+    {% with active="dashboard" %}
+    {% include "sidebar.html" %}
+    {% endwith %}
+    <section class="form__container">
+        <div id="chart"></div>
+    </section>
+</div>
+{% endblock %}
+
+{% block additionalScripts %}
+<script src="static/dashboard.js"></script>
+<script>
+    populateUserRole()
+    const _data = {{ data| safe }}
+    drawChart(_data)
+</script>
 {% endblock %}

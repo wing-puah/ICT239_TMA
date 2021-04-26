@@ -9,9 +9,9 @@
     <section class="form__container">
         <h1>Upload recordings</h1>
         <div>Upload CSV file e.g. "admin@fitwell.com.2021-01-17T01:00/97.20.0.0.29"</div>
-        <form>
+        <form id="calories">
             <input type="file" id="file" name="file" accept="csv, xlsx"><br />
-            <button type="submit" class="width-auto mt-1" id="calories">
+            <button type="submit" class="width-auto mt-1">
                 Upload
             </button>
         </form>
@@ -21,7 +21,11 @@
 {% endblock %}
 
 {% block additionalScripts %}
+<script src="static/log.js"></script>
 <script>
+    document
+        .getElementById("calories")
+        .addEventListener("submit", activities.sendFile);
     populateUserRole()
 </script>
 {% endblock %}

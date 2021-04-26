@@ -9,14 +9,16 @@ import json
 import os
 import copy
 
-from models import User, Activity, File
+from models import User, Activity, File, FileMapper
 app = Flask(__name__)
 
 app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017/fitwell'
 mongo = PyMongo(app)
+
 user_db_handler = User(mongo.db.user)
 activity_db_handler = Activity(mongo.db.activity)
 file_db_handler = File(mongo.db.activity)
+file_mapper_db_handler = FileMapper(mongo.db.file_mapper)
 
 
 @app.route("/")
@@ -37,17 +39,16 @@ def register():
         data = request.json
         print(f'A user is being registerd: {data}')
         db_res = user_db_handler.add_single(data)
-        # return redirect('/log')
-        # return redirect(url_for('log'))
         return json.dumps({'success': True, 'data': db_res})
 
 
 @app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html")
+    data = activity_db_handler.get_multi()
+    return render_template("dashboard.html", data=data)
 
 
-@app.route("/upload", methods=['GET', 'POST'])
+@ app.route("/upload", methods=['GET', 'POST'])
 def upload():
     if request.method == 'GET':
         return render_template("upload.html")
@@ -56,14 +57,16 @@ def upload():
             return Response('Missing files', status=406)
 
         file = request.files['file']
-        file_db_handler.upload(file)
+        db_res = file_db_handler.upload(file)
+        file_mapper_db_handler.create_and_save_map(db_res)
+
+        return json.dumps({'success': True, })
 
 
-@app.route('/login', methods=['POST'])
+@ app.route('/login', methods=['POST'])
 def login():
     if request.method == "POST":
         data = request.json
-        print(f'A user is logging in: {data}')
         db_res = user_db_handler.get_single(data['email'], data['password'])
 
         if db_res == None:
@@ -72,7 +75,7 @@ def login():
         return json.dumps({'success': True, 'data': db_res})
 
 
-@app.route('/activity', methods=['POST'])
+@ app.route('/activity', methods=['POST'])
 def activity():
     if request.method == "POST":
         data = request.json
