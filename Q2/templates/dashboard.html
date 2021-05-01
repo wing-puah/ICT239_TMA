@@ -6,6 +6,10 @@
     {% include "sidebar.html" %}
     {% endwith %}
     <section class="form__container">
+        <div class="text-center">
+            <h1>Calorie log</h1>
+            <p>Last seven Days logs</p>
+        </div>
         <div id="chart"></div>
     </section>
 </div>
@@ -15,7 +19,12 @@
 <script src="static/dashboard.js"></script>
 <script>
     populateUserRole()
-    const _data = {{ data| safe }}
-    drawChart(_data)
+    const _data = {{ data| safe}}
+    userFeStorage.retrieve().then(res => {
+        console.log({ res })
+        drawChart(_data, res.email)
+    }).catch(error => {
+        alert(`No user, login first with admin@fitwell.com, admin`)
+    })
 </script>
 {% endblock %}

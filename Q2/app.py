@@ -42,9 +42,15 @@ def register():
         return json.dumps({'success': True, 'data': db_res})
 
 
+"""
+since it is requested that we don't store the user in the backend, 
+so for this we just hard code the user as admin@fitwell.com 
+"""
+
+
 @app.route("/dashboard")
 def dashboard():
-    data = activity_db_handler.get_multi()
+    data = activity_db_handler.get_multi('admin@fitwell.com')
     return render_template("dashboard.html", data=data)
 
 

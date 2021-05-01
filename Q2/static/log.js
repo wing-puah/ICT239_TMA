@@ -48,7 +48,6 @@ const activities = (function () {
       dataType: "json",
     })
       .done(function (json) {
-        console.log({ json });
         const { success } = json;
         if (success) alert("Upload successfully!");
       })
